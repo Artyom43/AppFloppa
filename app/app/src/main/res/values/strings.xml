@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Floppa</string>
+    <string name="ok">OK!</string>
+    <string name="load_local">Загрузить с устройства</string>
+    <string name="load_web">Загрузить по ссылке</string>
+    <string name="enter_link">Введите ссылку на фотографию</string>
+    <string name="download">Загрузить</string>
+    <string name="empty_input">Пустой ввод</string>
+    <string name="download_storage">Загрузить на устройство</string>
+    <string name="floppa_app">Floppa App</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Delete</string>
+    <string name="hello_text">Похоже, что Вы еще не сохранили ни одной фотографии Флоппы в этом приложении. Скорее исправьте это! Нажмите на кнопку в правом верхнем углу и выберите удобный для Вас способ загрузки первой фотографии.</string>
+</resources>
