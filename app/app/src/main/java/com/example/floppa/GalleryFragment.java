@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,12 +20,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
@@ -58,9 +62,9 @@ public class GalleryFragment extends Fragment {
                 file.delete();
             }
 
-            GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            GridLayoutManager layoutManager = getLayoutManagerBasedOnOrientation();
             mPhotoList.setLayoutManager(layoutManager);
-            mPhotoList.setHasFixedSize(true);  // если знаем заранее размер списка
+            mPhotoList.setHasFixedSize(true);
 
             mCardsAdapter = new CardsAdapter(mPhotoNumber);
             mPhotoList.setAdapter(mCardsAdapter);
@@ -90,6 +94,7 @@ public class GalleryFragment extends Fragment {
 
         mBottomSheetDialog =
                 new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        mBottomSheetDialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
         mPhotoList = v.findViewById(R.id.rv_cards);
         mAddPhoto = v.findViewById(R.id.iv_add);
         mDelete = v.findViewById(R.id.iv_delete);
@@ -98,9 +103,9 @@ public class GalleryFragment extends Fragment {
         mAddPhoto.setOnClickListener(mOnAddClickListener);
         mDelete.setOnClickListener(mOnDeleteClickListener);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        GridLayoutManager layoutManager = getLayoutManagerBasedOnOrientation();
         mPhotoList.setLayoutManager(layoutManager);
-        mPhotoList.setHasFixedSize(true);  // если знаем заранее размер списка
+        mPhotoList.setHasFixedSize(true);
 
         mCardsAdapter = new CardsAdapter(mPhotoNumber);
         mPhotoList.setAdapter(mCardsAdapter);
@@ -198,6 +203,16 @@ public class GalleryFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
+    private GridLayoutManager getLayoutManagerBasedOnOrientation() {
+        GridLayoutManager layoutManager;
+        if (getActivity().getResources().getConfiguration().orientation == 1) {
+            layoutManager = new GridLayoutManager(getActivity(), 3);
+        } else {
+            layoutManager = new GridLayoutManager(getActivity(), 7);
+        }
+        return layoutManager;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_GET_PHOTO
@@ -225,7 +240,7 @@ public class GalleryFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            GridLayoutManager layoutManager = getLayoutManagerBasedOnOrientation();
             mPhotoList.setLayoutManager(layoutManager);
             mPhotoList.setHasFixedSize(true);  // если знаем заранее размер списка
             mPhotoNumber = mSharedPreferencesHelper.getPhotoUriList().size();
